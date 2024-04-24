@@ -9,6 +9,7 @@ use rand_chacha::ChaCha8Rng;
 
 use crate::{
     chunk::ChunkData,
+    constants::CHUNK_SIZE,
     quad::Direction,
     utils::{index_to_ivec3_bounds, vec3_to_index},
     voxel::BlockData,
@@ -76,16 +77,25 @@ impl ChunksRefs {
     ///! helper function to get block data that may exceed the bounds of the middle chunk
     ///! input position is local pos to middle chunk
     pub fn get_block(&self, pos: IVec3) -> &BlockData {
-        let x = (pos.x + 32) as u32;
-        let y = (pos.y + 32) as u32;
-        let z = (pos.z + 32) as u32;
-        let (x_chunk, x) = ((x / 32) as i32, (x % 32) as i32);
-        let (y_chunk, y) = ((y / 32) as i32, (y % 32) as i32);
-        let (z_chunk, z) = ((z / 32) as i32, (z % 32) as i32);
+        let x = (pos.x + CHUNK_SIZE as i32) as u32;
+        let y = (pos.y + CHUNK_SIZE as i32) as u32;
+        let z = (pos.z + CHUNK_SIZE as i32) as u32;
+        let (x_chunk, x) = (
+            (x / (CHUNK_SIZE as u32)) as i32,
+            (x % (CHUNK_SIZE as u32)) as i32,
+        );
+        let (y_chunk, y) = (
+            (y / (CHUNK_SIZE as u32)) as i32,
+            (y % (CHUNK_SIZE as u32)) as i32,
+        );
+        let (z_chunk, z) = (
+            (z / (CHUNK_SIZE as u32)) as i32,
+            (z % (CHUNK_SIZE as u32)) as i32,
+        );
 
         let chunk_index = vec3_to_index(IVec3::new(x_chunk, y_chunk, z_chunk), 3);
         let chunk_data = &self.chunks[chunk_index];
-        let i = vec3_to_index(IVec3::new(x, y, z), 32);
+        let i = vec3_to_index(IVec3::new(x, y, z), CHUNK_SIZE as i32);
         chunk_data.get_block(i)
     }
 
@@ -93,7 +103,7 @@ impl ChunksRefs {
     ///! panics if the local pos is outside the middle chunk
     pub fn get_block_no_neighbour(&self, pos: IVec3) -> &BlockData {
         let chunk_data = &self.chunks[13];
-        let i = vec3_to_index(pos, 32);
+        let i = vec3_to_index(pos, CHUNK_SIZE as i32);
         chunk_data.get_block(i)
     }
 

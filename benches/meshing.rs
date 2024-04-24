@@ -3,12 +3,7 @@ use std::{sync::Arc, time::Instant};
 use bevy::{math::IVec3, utils::HashMap};
 use criterion::{criterion_group, criterion_main, BatchSize, Criterion};
 use new_voxel_testing::{
-    chunk::ChunkData,
-    chunks_refs::ChunksRefs,
-    culled_mesher, culled_mesher_optimized, greedy_mesher, greedy_mesher_optimized,
-    lod::Lod,
-    utils::{index_to_ivec3, index_to_ivec3_bounds},
-    voxel::{BlockData, BlockType},
+    chunk::ChunkData, chunks_refs::ChunksRefs, constants::CHUNK_SIZE, culled_mesher, culled_mesher_optimized, greedy_mesher, greedy_mesher_optimized, lod::Lod, utils::{index_to_ivec3, index_to_ivec3_bounds}, voxel::{BlockData, BlockType}
 };
 use rand::{Rng, SeedableRng};
 use rand_chacha::ChaCha8Rng;
@@ -59,7 +54,7 @@ fn make_filled() -> ChunksRefs {
     ChunksRefs { chunks }
 }
 
-fn slicer(data: [u32; 32]) {
+fn slicer(data: [u32; CHUNK_SIZE]) {
     greedy_mesher_optimized::greedy_mesh_binary_plane(data, 32);
 }
 

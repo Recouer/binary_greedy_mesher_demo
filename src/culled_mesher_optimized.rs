@@ -10,11 +10,7 @@ use std::collections::VecDeque;
 use bevy::{math::ivec3, prelude::*};
 
 use crate::{
-    chunk_mesh::ChunkMesh,
-    chunks_refs::ChunksRefs,
-    lod::Lod,
-    quad::{Direction, Quad},
-    utils::{generate_indices, index_to_ivec3, is_on_edge, make_vertex_u32},
+    chunk_mesh::ChunkMesh, chunks_refs::ChunksRefs, constants::CHUNK_SIZE, lod::Lod, quad::{Direction, Quad}, utils::{generate_indices, index_to_ivec3, is_on_edge, make_vertex_u32}
 };
 
 // construct vertices for a face in provided direciton
@@ -60,7 +56,7 @@ pub fn build_chunk_mesh(chunks_refs: ChunksRefs, lod: Lod) -> Option<ChunkMesh> 
         .is_solid();
     // let most_solid = true;
 
-    for i in 0..32 * 32 * 32 {
+    for i in 0..(CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE) as i32 {
         let local = index_to_ivec3(i);
         let current = chunks_refs.get_block(local);
         if match most_solid {

@@ -1,7 +1,4 @@
-use std::{
-    collections::VecDeque,
-    time::{Duration, Instant},
-};
+use std::collections::VecDeque;
 
 use bevy::{math::ivec3, prelude::*, utils::HashMap};
 
@@ -33,7 +30,7 @@ pub fn build_chunk_mesh(chunks_refs: &ChunksRefs, lod: Lod) -> Option<ChunkMesh>
         x: usize,
         y: usize,
         z: usize,
-        axis_cols: &mut [[[u64; 34]; 34]; 3],
+        axis_cols: &mut [[[u64; CHUNK_SIZE_P]; CHUNK_SIZE_P]; 3],
     ) {
         if b.block_type.is_solid() {
             // x,z - y axis
@@ -304,7 +301,7 @@ impl GreedyQuad {
 
 ///! generate quads of a binary slice
 ///! lod not implemented atm
-pub fn greedy_mesh_binary_plane(mut data: [u32; 32], lod_size: u32) -> Vec<GreedyQuad> {
+pub fn greedy_mesh_binary_plane(mut data: [u32; CHUNK_SIZE], lod_size: u32) -> Vec<GreedyQuad> {
     let mut greedy_quads = vec![];
     for row in 0..data.len() {
         let mut y = 0;

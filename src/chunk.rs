@@ -2,8 +2,7 @@ use bevy::prelude::*;
 use bracket_noise::prelude::*;
 
 use crate::{
-    utils::index_to_ivec3,
-    voxel::{BlockData, BlockType},
+    constants::CHUNK_SIZE, utils::index_to_ivec3, voxel::{BlockData, BlockType}
 };
 
 #[derive(Clone)]
@@ -34,7 +33,7 @@ impl ChunkData {
     ///! shape our voxel data based on the chunk_pos
     pub fn generate(chunk_pos: IVec3) -> Self {
         // hardcoded extremity check
-        if chunk_pos.y * 32 + 32 > 21 + 32 {
+        if chunk_pos.y * (CHUNK_SIZE as i32) + (CHUNK_SIZE as i32) > 21 + (CHUNK_SIZE as i32) {
             return Self {
                 voxels: vec![BlockData {
                     block_type: BlockType::Air,
@@ -42,7 +41,7 @@ impl ChunkData {
             };
         }
         // hardcoded extremity check
-        if chunk_pos.y * 32 < -21 - 32 {
+        if chunk_pos.y * (CHUNK_SIZE as i32) < -21 - (CHUNK_SIZE as i32) {
             return Self {
                 voxels: vec![BlockData {
                     block_type: BlockType::Grass,
@@ -52,8 +51,8 @@ impl ChunkData {
         let mut voxels = vec![];
         let mut fast_noise = FastNoise::new();
         fast_noise.set_frequency(0.0254);
-        for i in 0..32 * 32 * 32 {
-            let voxel_pos = (chunk_pos * 32) + index_to_ivec3(i);
+        for i in 0..CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE {
+            let voxel_pos = (chunk_pos * CHUNK_SIZE as i32) + index_to_ivec3(i as i32);
             let scale = 1.0;
             fast_noise.set_frequency(0.0254);
             let overhang = fast_noise.get_noise3d(
