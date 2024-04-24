@@ -54,7 +54,7 @@ fn make_filled() -> ChunksRefs {
     ChunksRefs { chunks }
 }
 
-fn slicer(data: [u32; CHUNK_SIZE]) {
+fn slicer(data: [u32; 32]) {
     greedy_mesher_optimized::greedy_mesh_binary_plane(data, 32);
 }
 

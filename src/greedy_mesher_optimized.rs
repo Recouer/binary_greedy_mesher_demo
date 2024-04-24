@@ -301,7 +301,7 @@ impl GreedyQuad {
 
 ///! generate quads of a binary slice
 ///! lod not implemented atm
-pub fn greedy_mesh_binary_plane(mut data: [u32; CHUNK_SIZE], lod_size: u32) -> Vec<GreedyQuad> {
+pub fn greedy_mesh_binary_plane(mut data: [u32; 32], lod_size: u32) -> Vec<GreedyQuad> {
     let mut greedy_quads = vec![];
     for row in 0..data.len() {
         let mut y = 0;
